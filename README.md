@@ -61,12 +61,15 @@ export const envVars = {
 };
 
 ```
-2. build
+2. infra build
 ```
 npx projen build
 ```
-3. deploy
+3. infra deploy
 ```
 npx projen deploy
 ```
+4. app deploy by cicd 
+After finishing build, Approve stage, then deploy your application
+![cicd](./images/demo-cicd.png)
 
