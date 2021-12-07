@@ -61,4 +61,12 @@ export const envVars = {
 };
 
 ```
+2. build
+```
+npx projen build
+```
+3. deploy
+```
+npx projen deploy
+```
 
