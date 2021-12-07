@@ -20,10 +20,6 @@ const project = new AwsCdkTypeScriptApp({
   ], /* Which AWS CDK modules (those that start with "@aws-cdk/") this app uses. */
   context: {
     '@aws-cdk/core:newStyleStackSynthesis': true,
-    'vpcId': '',
-    'appName': 'demo',
-    'githubOwner': 'jingood2',
-    'githubRepo': 'demo-app',
   },
   deps: [
     'chalk',

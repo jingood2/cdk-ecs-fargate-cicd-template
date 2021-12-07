@@ -10,40 +10,71 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
-import { envVars } from '../config';
+//import { envVars } from '../config';
+
+export interface IGithubInfo {
+  githubOwner: string;
+  githubRepo: string;
+  githubBranch?: string;
+}
+
+export interface IAlbListenerCondition {
+  hostHeaders: string[];
+  pathPatterns: string[];
+  sourceIps: string[];
+  queryString: string[];
+}
+
+export interface IEcsInfo {
+  vpc?: ec2.IVpc;
+  ecsCluster?: ecs.Cluster;
+  taskExecutionRole?: iam.IRole;
+}
+
+export interface IAlbInfo {
+  listnerCondition: IAlbListenerCondition;
+  httpsListener: elbv2.ApplicationListener;
+  alb?: elbv2.IApplicationLoadBalancer;
+  priority: number;
+}
 
 export interface IEcsFargateCicdProps {
   stageName?: string;
   vpcId?: string;
+  vpc?: ec2.IVpc;
   ecsCluster?: ecs.Cluster;
   albArn?: string;
+  alb?: elbv2.IApplicationLoadBalancer;
+  priority: number;
   appName: string;
   appEcrRepo?: string;
   acmArn?: string;
   githubOwner: string;
   githubRepo: string;
   githubBranch?: string;
+  listenerConditions: IAlbListenerCondition;
+  token: string;
+  httpsListener: elbv2.ApplicationListener;
+  taskExecutionRole?: iam.IRole;
 }
 
 export class EcsFargateCicd extends cdk.Construct {
   public readonly vpc: ec2.IVpc;
   public readonly cluster: ecs.Cluster;
-  //public readonly alb: elbv2.ApplicationLoadBalancer;
   public readonly ecrImage: ecs.ContainerImage;
-  //public readonly fargateService: ecs_patterns.ApplicationLoadBalancedFargateService;
-  public readonly listener: elbv2.IApplicationListener;
+  public readonly listener: elbv2.ApplicationListener;
   public readonly containerName: string;
   public readonly ecrRepository: ecr.IRepository;
 
   constructor(scope: cdk.Construct, id: string, props: IEcsFargateCicdProps) {
     super(scope, id);
 
-    if (props.vpcId == undefined) {
+    if (props.vpc == undefined) {
       const natGatewayProvider = ec2.NatProvider.instance({
         instanceType: new ec2.InstanceType('t3.small'),
       });
 
-      this.vpc = new ec2.Vpc(scope, 'TestVpc', {
+      this.vpc = new ec2.Vpc(scope, 'Vpc', {
         natGatewayProvider,
         natGateways: 1,
         maxAzs: 2,
@@ -61,12 +92,13 @@ export class EcsFargateCicd extends cdk.Construct {
         ],
       });
     } else {
-      this.vpc = ec2.Vpc.fromLookup(this, 'VPC', { vpcId: props.vpcId } );
+      //this.vpc = ec2.Vpc.fromLookup(this, 'VPC', { vpcId: props.vpcId } );
+      this.vpc = props.vpc;
     }
 
     if (props.ecsCluster == undefined ) {
-      this.cluster = new ecs.Cluster(this, 'ecs-cluster', {
-        clusterName: 'ecs-cluster',
+      this.cluster = new ecs.Cluster(this, 'Cluster', {
+        clusterName: `${props.appName}-ecs-cluster`,
         vpc: this.vpc,
       });
     } else {
@@ -83,10 +115,10 @@ export class EcsFargateCicd extends cdk.Construct {
       this.ecrImage = new ecs.AssetImage( path.join(__dirname, '..', 'demo-app'));
     }
 
-    const taskExecutionRole = new iam.Role(this, 'ecs-task-execution-role', {
-      roleName: 'ecs-task-exection-role',
+    const taskExecutionRole = (props.taskExecutionRole == undefined) ? new iam.Role(this, `${props.appName}-ecs-task-execution-role`, {
+      roleName: `${props.appName}-ecs-task-execution-role`,
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
-    });
+    }) : props.taskExecutionRole;
 
     const executionRolePolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -110,15 +142,7 @@ export class EcsFargateCicd extends cdk.Construct {
 
     taskdef.addToExecutionRolePolicy(executionRolePolicy);
 
-    /* taskdef.executionRole?.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonECSTaskExecutionRolePolicy'),
-    );
- */
-    /* taskdef.executionRole?.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
-    ); */
-
-    taskdef.addContainer(`${props.appName}Container`, {
+    taskdef.addContainer(`${props.appName}-Container`, {
       image: this.ecrImage,
       containerName: `${props.appName}`,
       cpu: 256,
@@ -135,8 +159,8 @@ export class EcsFargateCicd extends cdk.Construct {
       logging: ecs.LogDriver.awsLogs({ streamPrefix: 'ecs-logs' }),
     });
 
-    if (props.albArn == undefined ) {
-      const alb = new elbv2.ApplicationLoadBalancer(this, 'LB', {
+    if (props.alb == undefined ) {
+      const alb = new elbv2.ApplicationLoadBalancer(this, `${props.appName}-ALB`, {
         vpc: this.vpc,
         internetFacing: true,
       });
@@ -176,23 +200,18 @@ export class EcsFargateCicd extends cdk.Construct {
       }
 
     } else {
-      this.listener = elbv2.ApplicationListener.fromLookup(this, 'ALBListener', {
-        loadBalancerArn: props.albArn,
-        listenerProtocol: elbv2.ApplicationProtocol.HTTPS,
-        listenerPort: 443,
-      });
-
+      this.listener = props.httpsListener;
     }
 
     const service = new ecs.FargateService(this, `${props.appName}-ecs-service`, {
       cluster: this.cluster,
       taskDefinition: taskdef,
-      //desiredCount: 2,
+      desiredCount: 2,
       //circuitBreaker: { rollback: true },
       minHealthyPercent: 50,
     });
 
-    const scaling = service.autoScaleTaskCount({ minCapacity: 1, maxCapacity: 2 } );
+    const scaling = service.autoScaleTaskCount({ minCapacity: 2, maxCapacity: 4 } );
 
     scaling.scaleOnCpuUtilization('CPUUtilizationScaleInOut', {
       targetUtilizationPercent: 20,
@@ -200,14 +219,16 @@ export class EcsFargateCicd extends cdk.Construct {
       scaleInCooldown: cdk.Duration.seconds(360),
     });
 
-    this.listener.addTargets(`${props.appName}-targetgroup`, {
+    this.listener.addTargets(`${props.appName}-Targetgroup`, {
       targetGroupName: `${props.appName}-targetgroup`,
       port: 80,
-      conditions: [
-        //elbv2.ListenerCondition.hostHeaders(['api.devrock.tk']),
-        elbv2.ListenerCondition.pathPatterns(['/*']),
-      ],
-      priority: 1,
+      /* conditions: [
+        elbv2.ListenerCondition.hostHeaders(props.listenerConditions.hostHeaders),
+        elbv2.ListenerCondition.pathPatterns(props.listenerConditions.pathPatterns),
+        elbv2.ListenerCondition.sourceIps(props.listenerConditions.sourceIps),
+      ], */
+      conditions: this.addListenerRule(props.listenerConditions),
+      priority: props.priority,
       targets: [service],
       healthCheck: {
         path: '/health',
@@ -217,17 +238,14 @@ export class EcsFargateCicd extends cdk.Construct {
 
     // ***PIPELINE CONSTRUCTS***
     this.containerName = props.appName;
-    // source output artifact
     const sourceOutput = new codepipeline.Artifact();
-    // docker build output artifact
     const buildOutput = new codepipeline.Artifact();
-
-    const oauthToken = cdk.SecretValue.secretsManager(`${envVars.GITHUB_TOKEN}`);
+    const oauthToken = cdk.SecretValue.secretsManager(props.token);
 
     // ECR - repo
 
     // CODEBUILD - project
-    const buildProject = new codebuild.PipelineProject(this, 'demo-CodeBuildPloject', {
+    const buildProject = new codebuild.PipelineProject(this, `${props.appName}-CodeBuildPloject`, {
       buildSpec: this.createBuildSpec(),
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_4_0,
@@ -331,5 +349,24 @@ export class EcsFargateCicd extends cdk.Construct {
         files: ['imagedefinitions.json'],
       },
     });
+  }
+
+  private addListenerRule(listnerConditions: IAlbListenerCondition) : elbv2.ListenerCondition[] {
+
+    var conditions : elbv2.ListenerCondition[] = [];
+
+    if (listnerConditions.hostHeaders.length > 0) {
+      conditions.push( elbv2.ListenerCondition.hostHeaders(listnerConditions.hostHeaders));
+    }
+
+    if (listnerConditions.pathPatterns.length > 0) {
+      conditions.push( elbv2.ListenerCondition.pathPatterns(listnerConditions.pathPatterns));
+    }
+
+    if (listnerConditions.sourceIps.length > 0) {
+      conditions.push( elbv2.ListenerCondition.sourceIps(listnerConditions.sourceIps));
+    }
+
+    return conditions;
   }
 }
