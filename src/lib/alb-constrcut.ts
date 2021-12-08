@@ -3,6 +3,7 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as cdk from '@aws-cdk/core';
 import { envVars } from '../config';
+import { WafV2Construct } from './waf-construct';
 
 export interface ConstructorNameProps {
   stageName: string;
@@ -13,7 +14,6 @@ export interface ConstructorNameProps {
 export class AlbConstruct extends cdk.Construct {
   public readonly alb: elbv2.ApplicationLoadBalancer;
   public readonly httpsListener: elbv2.ApplicationListener;
-  public readonly albArn: cdk.CfnOutput;
 
   constructor(scope: cdk.Construct, id: string, props: ConstructorNameProps) {
     super(scope, id);
@@ -45,6 +45,12 @@ export class AlbConstruct extends cdk.Construct {
 
     this.alb.addRedirect();
 
-    this.albArn = new cdk.CfnOutput(this, 'AlbArn', { value: this.alb.loadBalancerArn, exportName: 'AlbArn' });
+    // Setup WafV2
+    new WafV2Construct(this, 'WAF', {
+      stage: 'Dev',
+      alb: this.alb,
+    });
+
+    new cdk.CfnOutput(this, 'AlbDnsName', { value: this.alb.loadBalancerDnsName, exportName: 'AlbDnsUrl' });
   }
 }

@@ -3,12 +3,15 @@
 exports[`Snapshot 1`] = `
 Object {
   "Outputs": Object {
-    "ALBAlbArn7F256308": Object {
+    "ALBAlbDnsName2D39C887": Object {
       "Export": Object {
-        "Name": "AlbArn",
+        "Name": "AlbDnsUrl",
       },
       "Value": Object {
-        "Ref": "ALBdevrockdevALB1FC3A641",
+        "Fn::GetAtt": Array [
+          "ALBdevrockdevALB1FC3A641",
+          "DNSName",
+        ],
       },
     },
     "VPCVpcId2F75874A": Object {
@@ -21,6 +24,166 @@ Object {
     },
   },
   "Resources": Object {
+    "ALBWAFWebACLAssociation327ACFD0": Object {
+      "DependsOn": Array [
+        "ALBWAFWebAcl9527ADD0",
+      ],
+      "Properties": Object {
+        "ResourceArn": Object {
+          "Ref": "ALBdevrockdevALB1FC3A641",
+        },
+        "WebACLArn": Object {
+          "Fn::GetAtt": Array [
+            "ALBWAFWebAcl9527ADD0",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::WAFv2::WebACLAssociation",
+    },
+    "ALBWAFWebAcl9527ADD0": Object {
+      "Properties": Object {
+        "DefaultAction": Object {
+          "Allow": Object {},
+        },
+        "Name": "devrock-Dev-waf-web-acl",
+        "Rules": Array [
+          Object {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 1,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 2,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 3,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesLinuxRuleSet",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 4,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesLinuxRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesLinuxRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 5,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesAnonymousIpList",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 6,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesAnonymousIpList",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesAnonymousIpList",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          Object {
+            "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+            "OverrideAction": Object {
+              "None": Object {},
+            },
+            "Priority": 7,
+            "Statement": Object {
+              "ManagedRuleGroupStatement": Object {
+                "Name": "AWSManagedRulesBotControlRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": Object {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesBotControlRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": Object {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "devrock-Dev-waf-web-acl",
+          "SampledRequestsEnabled": true,
+        },
+      },
+      "Type": "AWS::WAFv2::WebACL",
+    },
     "ALBdevrockdevALB1FC3A641": Object {
       "DependsOn": Array [
         "devrockdevVpcpublicSubnet1DefaultRouteF5626F1E",
@@ -78,7 +241,7 @@ Object {
       "Properties": Object {
         "Certificates": Array [
           Object {
-            "CertificateArn": "arn:aws:acm:ap-northeast-2:074732449166:certificate/a3bb34ef-d314-4ab9-a1b0-0351c19439f1",
+            "CertificateArn": "arn:aws:acm:ap-northeast-2:074732449166:certificate/8fddc4d7-35b4-41fc-9072-b6074698920f",
           },
         ],
         "DefaultActions": Array [
@@ -99,11 +262,11 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "ALBdevrockdevALBhttpsdemoTargetgroupGroup5B4CDB2B": Object {
+    "ALBdevrockdevALBhttpsbackendTargetgroupGroup68A8A54A": Object {
       "Properties": Object {
         "HealthCheckIntervalSeconds": 60,
         "HealthCheckPath": "/health",
-        "Name": "demo-targetgroup",
+        "Name": "backend-targetgroup",
         "Port": 80,
         "Protocol": "HTTP",
         "TargetGroupAttributes": Array [
@@ -119,12 +282,12 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
-    "ALBdevrockdevALBhttpsdemoTargetgroupRuleE4BBB2A6": Object {
+    "ALBdevrockdevALBhttpsbackendTargetgroupRule23E38981": Object {
       "Properties": Object {
         "Actions": Array [
           Object {
             "TargetGroupArn": Object {
-              "Ref": "ALBdevrockdevALBhttpsdemoTargetgroupGroup5B4CDB2B",
+              "Ref": "ALBdevrockdevALBhttpsbackendTargetgroupGroup68A8A54A",
             },
             "Type": "forward",
           },
@@ -134,7 +297,7 @@ Object {
             "Field": "path-pattern",
             "PathPatternConfig": Object {
               "Values": Array [
-                "/*",
+                "/v1/*",
               ],
             },
           },
@@ -142,54 +305,7 @@ Object {
         "ListenerArn": Object {
           "Ref": "ALBdevrockdevALBhttps591F00AD",
         },
-        "Priority": 2000,
-      },
-      "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
-    },
-    "ALBdevrockdevALBhttpshelloTargetgroupGroup096DB6E4": Object {
-      "Properties": Object {
-        "HealthCheckIntervalSeconds": 60,
-        "HealthCheckPath": "/health",
-        "Name": "hello-targetgroup",
-        "Port": 80,
-        "Protocol": "HTTP",
-        "TargetGroupAttributes": Array [
-          Object {
-            "Key": "stickiness.enabled",
-            "Value": "false",
-          },
-        ],
-        "TargetType": "ip",
-        "VpcId": Object {
-          "Ref": "devrockdevVpcE0FCCF81",
-        },
-      },
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-    },
-    "ALBdevrockdevALBhttpshelloTargetgroupRuleC374F68A": Object {
-      "Properties": Object {
-        "Actions": Array [
-          Object {
-            "TargetGroupArn": Object {
-              "Ref": "ALBdevrockdevALBhttpshelloTargetgroupGroup096DB6E4",
-            },
-            "Type": "forward",
-          },
-        ],
-        "Conditions": Array [
-          Object {
-            "Field": "path-pattern",
-            "PathPatternConfig": Object {
-              "Values": Array [
-                "/hello",
-              ],
-            },
-          },
-        ],
-        "ListenerArn": Object {
-          "Ref": "ALBdevrockdevALBhttps591F00AD",
-        },
-        "Priority": 300,
+        "Priority": 10,
       },
       "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
     },
@@ -250,7 +366,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373": Object {
+    "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA": Object {
       "Properties": Object {
         "Artifacts": Object {
           "Type": "CODEPIPELINE",
@@ -263,7 +379,7 @@ Object {
         },
         "EncryptionKey": Object {
           "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+            "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
             "Arn",
           ],
         },
@@ -285,7 +401,7 @@ Object {
                             ":",
                             Object {
                               "Fn::GetAtt": Array [
-                                "demoEcsFargateWithCicddemoecrrepo7DBE0A10",
+                                "backendEcsFargateWithCicdbackendecrrepo04ABABD5",
                                 "Arn",
                               ],
                             },
@@ -302,7 +418,7 @@ Object {
                             ":",
                             Object {
                               "Fn::GetAtt": Array [
-                                "demoEcsFargateWithCicddemoecrrepo7DBE0A10",
+                                "backendEcsFargateWithCicdbackendecrrepo04ABABD5",
                                 "Arn",
                               ],
                             },
@@ -316,7 +432,7 @@ Object {
                     },
                     "/",
                     Object {
-                      "Ref": "demoEcsFargateWithCicddemoecrrepo7DBE0A10",
+                      "Ref": "backendEcsFargateWithCicdbackendecrrepo04ABABD5",
                     },
                   ],
                 ],
@@ -325,7 +441,7 @@ Object {
             Object {
               "Name": "CONTAINER_NAME",
               "Type": "PLAINTEXT",
-              "Value": "demo",
+              "Value": "backend",
             },
           ],
           "Image": "aws/codebuild/standard:4.0",
@@ -335,7 +451,7 @@ Object {
         },
         "ServiceRole": Object {
           "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemoCodeBuildPlojectRole1915B434",
+            "backendEcsFargateWithCicdbackendCodeBuildPlojectRole185091B8",
             "Arn",
           ],
         },
@@ -354,6 +470,8 @@ Object {
     },
     \\"build\\": {
       \\"commands\\": [
+        \\"chmod +x gradlew\\",
+        \\"./gradlew clean build\\",
         \\"docker build -t $REPOSITORY_URI:latest .\\",
         \\"docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG\\"
       ]
@@ -380,7 +498,7 @@ Object {
       },
       "Type": "AWS::CodeBuild::Project",
     },
-    "demoEcsFargateWithCicddemoCodeBuildPlojectRole1915B434": Object {
+    "backendEcsFargateWithCicdbackendCodeBuildPlojectRole185091B8": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -397,7 +515,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemoCodeBuildPlojectRoleDefaultPolicyD5AC7098": Object {
+    "backendEcsFargateWithCicdbackendCodeBuildPlojectRoleDefaultPolicy34C36B6B": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -419,7 +537,7 @@ Object {
                       },
                       ":logs:ap-northeast-2:074732449166:log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373",
+                        "Ref": "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA",
                       },
                     ],
                   ],
@@ -434,7 +552,7 @@ Object {
                       },
                       ":logs:ap-northeast-2:074732449166:log-group:/aws/codebuild/",
                       Object {
-                        "Ref": "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373",
+                        "Ref": "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA",
                       },
                       ":*",
                     ],
@@ -461,7 +579,7 @@ Object {
                     },
                     ":codebuild:ap-northeast-2:074732449166:report-group/",
                     Object {
-                      "Ref": "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373",
+                      "Ref": "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA",
                     },
                     "-*",
                   ],
@@ -477,7 +595,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemoecrrepo7DBE0A10",
+                  "backendEcsFargateWithCicdbackendecrrepo04ABABD5",
                   "Arn",
                 ],
               },
@@ -497,7 +615,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemoecrrepo7DBE0A10",
+                  "backendEcsFargateWithCicdbackendecrrepo04ABABD5",
                   "Arn",
                 ],
               },
@@ -515,7 +633,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                     "Arn",
                   ],
                 },
@@ -525,7 +643,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                          "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                           "Arn",
                         ],
                       },
@@ -546,7 +664,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
                   "Arn",
                 ],
               },
@@ -561,7 +679,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
                   "Arn",
                 ],
               },
@@ -569,16 +687,170 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "demoEcsFargateWithCicddemoCodeBuildPlojectRoleDefaultPolicyD5AC7098",
+        "PolicyName": "backendEcsFargateWithCicdbackendCodeBuildPlojectRoleDefaultPolicy34C36B6B",
         "Roles": Array [
           Object {
-            "Ref": "demoEcsFargateWithCicddemoCodeBuildPlojectRole1915B434",
+            "Ref": "backendEcsFargateWithCicdbackendCodeBuildPlojectRole185091B8",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineApprovalApproveCodePipelineActionRole7ED43ED6": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipeline41D87E94": Object {
+      "DependsOn": Array [
+        "backendEcsFargateWithCicdbackendbuildCodePipelineRoleDefaultPolicyD574E0E7",
+        "backendEcsFargateWithCicdbackendbuildCodePipelineRoleEA1D01C6",
+      ],
+      "Properties": Object {
+        "ArtifactStore": Object {
+          "EncryptionKey": Object {
+            "Id": Object {
+              "Fn::GetAtt": Array [
+                "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
+                "Arn",
+              ],
+            },
+            "Type": "KMS",
+          },
+          "Location": Object {
+            "Ref": "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
+          },
+          "Type": "S3",
+        },
+        "Name": "backend-ci-ecr-pipeline",
+        "RoleArn": Object {
+          "Fn::GetAtt": Array [
+            "backendEcsFargateWithCicdbackendbuildCodePipelineRoleEA1D01C6",
+            "Arn",
+          ],
+        },
+        "Stages": Array [
+          Object {
+            "Actions": Array [
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Source",
+                  "Owner": "ThirdParty",
+                  "Provider": "GitHub",
+                  "Version": "1",
+                },
+                "Configuration": Object {
+                  "Branch": "feature/odigage-admin",
+                  "OAuthToken": "{{resolve:secretsmanager:devrock/github/odigage:SecretString:::}}",
+                  "Owner": "devrock-svc",
+                  "PollForSourceChanges": false,
+                  "Repo": "videoend-back",
+                },
+                "Name": "Github_Source",
+                "OutputArtifacts": Array [
+                  Object {
+                    "Name": "Artifact_Source_Github_Source",
+                  },
+                ],
+                "RunOrder": 1,
+              },
+            ],
+            "Name": "Source",
+          },
+          Object {
+            "Actions": Array [
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1",
+                },
+                "Configuration": Object {
+                  "ProjectName": Object {
+                    "Ref": "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA",
+                  },
+                },
+                "InputArtifacts": Array [
+                  Object {
+                    "Name": "Artifact_Source_Github_Source",
+                  },
+                ],
+                "Name": "Build_DockerImage_ECR",
+                "OutputArtifacts": Array [
+                  Object {
+                    "Name": "Artifact_Build_Build_DockerImage_ECR",
+                  },
+                ],
+                "RoleArn": Object {
+                  "Fn::GetAtt": Array [
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRole25C55326",
+                    "Arn",
+                  ],
+                },
+                "RunOrder": 1,
+              },
+            ],
+            "Name": "Build",
+          },
+          Object {
+            "Actions": Array [
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Approval",
+                  "Owner": "AWS",
+                  "Provider": "Manual",
+                  "Version": "1",
+                },
+                "Name": "Approve",
+                "RoleArn": Object {
+                  "Fn::GetAtt": Array [
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineApprovalApproveCodePipelineActionRole9DD16117",
+                    "Arn",
+                  ],
+                },
+                "RunOrder": 1,
+              },
+            ],
+            "Name": "Approval",
+          },
+          Object {
+            "Actions": Array [
+              Object {
+                "ActionTypeId": Object {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "ECS",
+                  "Version": "1",
+                },
+                "Configuration": Object {
+                  "ClusterName": Object {
+                    "Ref": "CLUSTERCDDEBBE4",
+                  },
+                  "ServiceName": Object {
+                    "Fn::GetAtt": Array [
+                      "backendEcsFargateWithCicdbackendecsserviceService0583A20E",
+                      "Name",
+                    ],
+                  },
+                },
+                "InputArtifacts": Array [
+                  Object {
+                    "Name": "Artifact_Build_Build_DockerImage_ECR",
+                  },
+                ],
+                "Name": "DeployAction",
+                "RoleArn": Object {
+                  "Fn::GetAtt": Array [
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRole62CFE761",
+                    "Arn",
+                  ],
+                },
+                "RunOrder": 1,
+              },
+            ],
+            "Name": "DeploytoECS",
+          },
+        ],
+      },
+      "Type": "AWS::CodePipeline::Pipeline",
+    },
+    "backendEcsFargateWithCicdbackendbuildCodePipelineApprovalApproveCodePipelineActionRole9DD16117": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -606,7 +878,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
         "BucketEncryption": Object {
@@ -615,7 +887,7 @@ Object {
               "ServerSideEncryptionByDefault": Object {
                 "KMSMasterKeyID": Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
                     "Arn",
                   ],
                 },
@@ -634,7 +906,21 @@ Object {
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyAliasA1289BB8": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AliasName": "alias/codepipeline-teststackbackendecsfargatewithcicdbackendbuildcodepipeline51016094",
+        "TargetKeyId": Object {
+          "Fn::GetAtt": Array [
+            "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
         "KeyPolicy": Object {
@@ -686,7 +972,7 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineRole3C575899",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineRoleEA1D01C6",
                     "Arn",
                   ],
                 },
@@ -705,7 +991,7 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemoCodeBuildPlojectRole1915B434",
+                    "backendEcsFargateWithCicdbackendCodeBuildPlojectRole185091B8",
                     "Arn",
                   ],
                 },
@@ -723,7 +1009,7 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemoCodeBuildPlojectRole1915B434",
+                    "backendEcsFargateWithCicdbackendCodeBuildPlojectRole185091B8",
                     "Arn",
                   ],
                 },
@@ -739,7 +1025,7 @@ Object {
               "Principal": Object {
                 "AWS": Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleD04CD07F",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRole62CFE761",
                     "Arn",
                   ],
                 },
@@ -753,21 +1039,7 @@ Object {
       "Type": "AWS::KMS::Key",
       "UpdateReplacePolicy": "Delete",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKeyAlias5A5F170F": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "AliasName": "alias/codepipeline-teststackdemoecsfargatewithcicddemobuildcodepipelineaa95b39d",
-        "TargetKeyId": Object {
-          "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::KMS::Alias",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleBD01FC16": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRole25C55326": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -795,7 +1067,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicy376C08FB": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicyC8CD7C81": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -808,7 +1080,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373",
+                  "backendEcsFargateWithCicdbackendCodeBuildPloject3FD54BBA",
                   "Arn",
                 ],
               },
@@ -816,16 +1088,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicy376C08FB",
+        "PolicyName": "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicyC8CD7C81",
         "Roles": Array [
           Object {
-            "Ref": "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleBD01FC16",
+            "Ref": "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRole25C55326",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleD04CD07F": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRole62CFE761": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -853,7 +1125,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy4EE011A0": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy65B38173": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -892,7 +1164,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                     "Arn",
                   ],
                 },
@@ -902,7 +1174,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                          "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                           "Arn",
                         ],
                       },
@@ -920,7 +1192,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
                   "Arn",
                 ],
               },
@@ -928,187 +1200,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy4EE011A0",
+        "PolicyName": "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy65B38173",
         "Roles": Array [
           Object {
-            "Ref": "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleD04CD07F",
+            "Ref": "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRole62CFE761",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineF540CEC8": Object {
-      "DependsOn": Array [
-        "demoEcsFargateWithCicddemobuildCodePipelineRoleDefaultPolicy98BEE371",
-        "demoEcsFargateWithCicddemobuildCodePipelineRole3C575899",
-      ],
-      "Properties": Object {
-        "ArtifactStore": Object {
-          "EncryptionKey": Object {
-            "Id": Object {
-              "Fn::GetAtt": Array [
-                "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
-                "Arn",
-              ],
-            },
-            "Type": "KMS",
-          },
-          "Location": Object {
-            "Ref": "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
-          },
-          "Type": "S3",
-        },
-        "Name": "demo-ci-ecr-pipeline",
-        "RoleArn": Object {
-          "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemobuildCodePipelineRole3C575899",
-            "Arn",
-          ],
-        },
-        "Stages": Array [
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Source",
-                  "Owner": "ThirdParty",
-                  "Provider": "GitHub",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "Branch": "master",
-                  "OAuthToken": "{{resolve:secretsmanager:devrock/github/token:SecretString:::}}",
-                  "Owner": "jingood2",
-                  "PollForSourceChanges": false,
-                  "Repo": "demo-app",
-                },
-                "Name": "Github_Source",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Source_Github_Source",
-                  },
-                ],
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Source",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Build",
-                  "Owner": "AWS",
-                  "Provider": "CodeBuild",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "ProjectName": Object {
-                    "Ref": "demoEcsFargateWithCicddemoCodeBuildPlojectBA12B373",
-                  },
-                },
-                "InputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Source_Github_Source",
-                  },
-                ],
-                "Name": "Build_DockerImage_ECR",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Build_Build_DockerImage_ECR",
-                  },
-                ],
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleBD01FC16",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Build",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Approval",
-                  "Owner": "AWS",
-                  "Provider": "Manual",
-                  "Version": "1",
-                },
-                "Name": "Approve",
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineApprovalApproveCodePipelineActionRole7ED43ED6",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Approval",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Deploy",
-                  "Owner": "AWS",
-                  "Provider": "ECS",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "ClusterName": Object {
-                    "Ref": "CLUSTERCDDEBBE4",
-                  },
-                  "ServiceName": Object {
-                    "Fn::GetAtt": Array [
-                      "demoEcsFargateWithCicddemoecsserviceServiceA5F4FEEF",
-                      "Name",
-                    ],
-                  },
-                },
-                "InputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Build_Build_DockerImage_ECR",
-                  },
-                ],
-                "Name": "DeployAction",
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleD04CD07F",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "DeploytoECS",
-          },
-        ],
-      },
-      "Type": "AWS::CodePipeline::Pipeline",
-    },
-    "demoEcsFargateWithCicddemobuildCodePipelineRole3C575899": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "codepipeline.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "demoEcsFargateWithCicddemobuildCodePipelineRoleDefaultPolicy98BEE371": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineRoleDefaultPolicyD574E0E7": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1125,7 +1226,7 @@ Object {
               "Resource": Array [
                 Object {
                   "Fn::GetAtt": Array [
-                    "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                    "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                     "Arn",
                   ],
                 },
@@ -1135,7 +1236,7 @@ Object {
                     Array [
                       Object {
                         "Fn::GetAtt": Array [
-                          "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucket7AC98BAE",
+                          "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucket50AAFE37",
                           "Arn",
                         ],
                       },
@@ -1156,7 +1257,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineArtifactsBucketEncryptionKey767D2FD8",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineArtifactsBucketEncryptionKeyFF67CC2C",
                   "Arn",
                 ],
               },
@@ -1166,7 +1267,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleBD01FC16",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRole25C55326",
                   "Arn",
                 ],
               },
@@ -1176,7 +1277,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineApprovalApproveCodePipelineActionRole7ED43ED6",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineApprovalApproveCodePipelineActionRole9DD16117",
                   "Arn",
                 ],
               },
@@ -1186,7 +1287,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleD04CD07F",
+                  "backendEcsFargateWithCicdbackendbuildCodePipelineDeploytoECSDeployActionCodePipelineActionRole62CFE761",
                   "Arn",
                 ],
               },
@@ -1194,20 +1295,37 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "demoEcsFargateWithCicddemobuildCodePipelineRoleDefaultPolicy98BEE371",
+        "PolicyName": "backendEcsFargateWithCicdbackendbuildCodePipelineRoleDefaultPolicyD574E0E7",
         "Roles": Array [
           Object {
-            "Ref": "demoEcsFargateWithCicddemobuildCodePipelineRole3C575899",
+            "Ref": "backendEcsFargateWithCicdbackendbuildCodePipelineRoleEA1D01C6",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "demoEcsFargateWithCicddemobuildCodePipelineSourceGithubSourceWebhookResourceCD9AE6E3": Object {
+    "backendEcsFargateWithCicdbackendbuildCodePipelineRoleEA1D01C6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "codepipeline.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "backendEcsFargateWithCicdbackendbuildCodePipelineSourceGithubSourceWebhookResource375D542C": Object {
       "Properties": Object {
         "Authentication": "GITHUB_HMAC",
         "AuthenticationConfiguration": Object {
-          "SecretToken": "{{resolve:secretsmanager:devrock/github/token:SecretString:::}}",
+          "SecretToken": "{{resolve:secretsmanager:devrock/github/odigage:SecretString:::}}",
         },
         "Filters": Array [
           Object {
@@ -1218,23 +1336,23 @@ Object {
         "RegisterWithThirdParty": true,
         "TargetAction": "Github_Source",
         "TargetPipeline": Object {
-          "Ref": "demoEcsFargateWithCicddemobuildCodePipelineF540CEC8",
+          "Ref": "backendEcsFargateWithCicdbackendbuildCodePipeline41D87E94",
         },
         "TargetPipelineVersion": 1,
       },
       "Type": "AWS::CodePipeline::Webhook",
     },
-    "demoEcsFargateWithCicddemoecrrepo7DBE0A10": Object {
+    "backendEcsFargateWithCicdbackendecrrepo04ABABD5": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
-        "RepositoryName": "demo-ecr-repo",
+        "RepositoryName": "backend-ecr-repo",
       },
       "Type": "AWS::ECR::Repository",
       "UpdateReplacePolicy": "Retain",
     },
-    "demoEcsFargateWithCicddemoecsserviceSecurityGroup0A90601B": Object {
+    "backendEcsFargateWithCicdbackendecsserviceSecurityGroupAFD4EC29": Object {
       "Properties": Object {
-        "GroupDescription": "testStack/demo-EcsFargateWithCicd/demo-ecs-service/SecurityGroup",
+        "GroupDescription": "testStack/backend-EcsFargateWithCicd/backend-ecs-service/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -1248,13 +1366,13 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "demoEcsFargateWithCicddemoecsserviceSecurityGroupfromtestStackALBdevrockdevalbsg46DF81F180809C11ABD4": Object {
+    "backendEcsFargateWithCicdbackendecsserviceSecurityGroupfromtestStackALBdevrockdevalbsg46DF81F180905C469098": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
-        "FromPort": 8080,
+        "FromPort": 8090,
         "GroupId": Object {
           "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemoecsserviceSecurityGroup0A90601B",
+            "backendEcsFargateWithCicdbackendecsserviceSecurityGroupAFD4EC29",
             "GroupId",
           ],
         },
@@ -1265,13 +1383,13 @@ Object {
             "GroupId",
           ],
         },
-        "ToPort": 8080,
+        "ToPort": 8090,
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
-    "demoEcsFargateWithCicddemoecsserviceServiceA5F4FEEF": Object {
+    "backendEcsFargateWithCicdbackendecsserviceService0583A20E": Object {
       "DependsOn": Array [
-        "ALBdevrockdevALBhttpsdemoTargetgroupRuleE4BBB2A6",
+        "ALBdevrockdevALBhttpsbackendTargetgroupRule23E38981",
       ],
       "Properties": Object {
         "Cluster": Object {
@@ -1287,10 +1405,10 @@ Object {
         "LaunchType": "FARGATE",
         "LoadBalancers": Array [
           Object {
-            "ContainerName": "demo",
-            "ContainerPort": 8080,
+            "ContainerName": "backend",
+            "ContainerPort": 8090,
             "TargetGroupArn": Object {
-              "Ref": "ALBdevrockdevALBhttpsdemoTargetgroupGroup5B4CDB2B",
+              "Ref": "ALBdevrockdevALBhttpsbackendTargetgroupGroup68A8A54A",
             },
           },
         ],
@@ -1300,7 +1418,7 @@ Object {
             "SecurityGroups": Array [
               Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemoecsserviceSecurityGroup0A90601B",
+                  "backendEcsFargateWithCicdbackendecsserviceSecurityGroupAFD4EC29",
                   "GroupId",
                 ],
               },
@@ -1316,12 +1434,30 @@ Object {
           },
         },
         "TaskDefinition": Object {
-          "Ref": "demoEcsFargateWithCicddemofargatetaskdef0A583C07",
+          "Ref": "backendEcsFargateWithCicdbackendfargatetaskdef24EBB49E",
         },
       },
       "Type": "AWS::ECS::Service",
     },
-    "demoEcsFargateWithCicddemoecsserviceTaskCountTarget8FE57EA1": Object {
+    "backendEcsFargateWithCicdbackendecsserviceTaskCountTargetCPUUtilizationScaleInOut4E3782A7": Object {
+      "Properties": Object {
+        "PolicyName": "testStackbackendEcsFargateWithCicdbackendecsserviceTaskCountTargetCPUUtilizationScaleInOut3866B7E6",
+        "PolicyType": "TargetTrackingScaling",
+        "ScalingTargetId": Object {
+          "Ref": "backendEcsFargateWithCicdbackendecsserviceTaskCountTargetE9C9C7CA",
+        },
+        "TargetTrackingScalingPolicyConfiguration": Object {
+          "PredefinedMetricSpecification": Object {
+            "PredefinedMetricType": "ECSServiceAverageCPUUtilization",
+          },
+          "ScaleInCooldown": 360,
+          "ScaleOutCooldown": 60,
+          "TargetValue": 20,
+        },
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+    },
+    "backendEcsFargateWithCicdbackendecsserviceTaskCountTargetE9C9C7CA": Object {
       "Properties": Object {
         "MaxCapacity": 4,
         "MinCapacity": 2,
@@ -1336,7 +1472,7 @@ Object {
               "/",
               Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemoecsserviceServiceA5F4FEEF",
+                  "backendEcsFargateWithCicdbackendecsserviceService0583A20E",
                   "Name",
                 ],
               },
@@ -1360,29 +1496,11 @@ Object {
       },
       "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
     },
-    "demoEcsFargateWithCicddemoecsserviceTaskCountTargetCPUUtilizationScaleInOutB3931BD7": Object {
-      "Properties": Object {
-        "PolicyName": "testStackdemoEcsFargateWithCicddemoecsserviceTaskCountTargetCPUUtilizationScaleInOutDA133695",
-        "PolicyType": "TargetTrackingScaling",
-        "ScalingTargetId": Object {
-          "Ref": "demoEcsFargateWithCicddemoecsserviceTaskCountTarget8FE57EA1",
-        },
-        "TargetTrackingScalingPolicyConfiguration": Object {
-          "PredefinedMetricSpecification": Object {
-            "PredefinedMetricType": "ECSServiceAverageCPUUtilization",
-          },
-          "ScaleInCooldown": 360,
-          "ScaleOutCooldown": 60,
-          "TargetValue": 20,
-        },
-      },
-      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
-    },
-    "demoEcsFargateWithCicddemofargatetaskdef0A583C07": Object {
+    "backendEcsFargateWithCicdbackendfargatetaskdef24EBB49E": Object {
       "Properties": Object {
         "ContainerDefinitions": Array [
           Object {
-            "Cpu": 256,
+            "Cpu": 1024,
             "EnvironmentFiles": Array [],
             "Essential": true,
             "Image": Object {
@@ -1393,7 +1511,7 @@ Object {
                   Object {
                     "Ref": "AWS::URLSuffix",
                   },
-                  "/aws-cdk/assets:a4d0dfe1f748fa08918d1c22b5d548b108b5d58b3d6378d217ae0095256a69e3",
+                  "/aws-cdk/assets:fdb22e68c925d7aa8f08aac0a41a165e6dc0a7df19620c5e400702223b65b2b1",
                 ],
               ],
             },
@@ -1401,32 +1519,32 @@ Object {
               "LogDriver": "awslogs",
               "Options": Object {
                 "awslogs-group": Object {
-                  "Ref": "demoEcsFargateWithCicddemofargatetaskdefdemoContainerLogGroup20AE9AE2",
+                  "Ref": "backendEcsFargateWithCicdbackendfargatetaskdefbackendContainerLogGroup73CAED16",
                 },
                 "awslogs-region": "ap-northeast-2",
                 "awslogs-stream-prefix": "ecs-logs",
               },
             },
-            "Memory": 512,
-            "Name": "demo",
+            "Memory": 2048,
+            "Name": "backend",
             "PortMappings": Array [
               Object {
-                "ContainerPort": 8080,
+                "ContainerPort": 8090,
                 "Protocol": "tcp",
               },
             ],
             "Secrets": Array [],
           },
         ],
-        "Cpu": "512",
+        "Cpu": "1024",
         "ExecutionRoleArn": Object {
           "Fn::GetAtt": Array [
-            "demoEcsFargateWithCicddemofargatetaskdefExecutionRole1F35CC2A",
+            "backendEcsFargateWithCicdbackendfargatetaskdefExecutionRole67FC02DA",
             "Arn",
           ],
         },
-        "Family": "testStackdemoEcsFargateWithCicddemofargatetaskdefB8C260FF",
-        "Memory": "1024",
+        "Family": "testStackbackendEcsFargateWithCicdbackendfargatetaskdef705545C5",
+        "Memory": "2048",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": Array [
           "FARGATE",
@@ -1440,7 +1558,7 @@ Object {
       },
       "Type": "AWS::ECS::TaskDefinition",
     },
-    "demoEcsFargateWithCicddemofargatetaskdefExecutionRole1F35CC2A": Object {
+    "backendEcsFargateWithCicdbackendfargatetaskdefExecutionRole67FC02DA": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -1457,7 +1575,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "demoEcsFargateWithCicddemofargatetaskdefExecutionRoleDefaultPolicyD1683123": Object {
+    "backendEcsFargateWithCicdbackendfargatetaskdefExecutionRoleDefaultPolicy69348501": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
@@ -1506,7 +1624,7 @@ Object {
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "demoEcsFargateWithCicddemofargatetaskdefdemoContainerLogGroup20AE9AE2",
+                  "backendEcsFargateWithCicdbackendfargatetaskdefbackendContainerLogGroup73CAED16",
                   "Arn",
                 ],
               },
@@ -1514,16 +1632,16 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "demoEcsFargateWithCicddemofargatetaskdefExecutionRoleDefaultPolicyD1683123",
+        "PolicyName": "backendEcsFargateWithCicdbackendfargatetaskdefExecutionRoleDefaultPolicy69348501",
         "Roles": Array [
           Object {
-            "Ref": "demoEcsFargateWithCicddemofargatetaskdefExecutionRole1F35CC2A",
+            "Ref": "backendEcsFargateWithCicdbackendfargatetaskdefExecutionRole67FC02DA",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "demoEcsFargateWithCicddemofargatetaskdefdemoContainerLogGroup20AE9AE2": Object {
+    "backendEcsFargateWithCicdbackendfargatetaskdefbackendContainerLogGroup73CAED16": Object {
       "DeletionPolicy": "Retain",
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Retain",
@@ -2015,1284 +2133,6 @@ Object {
         },
       },
       "Type": "AWS::EC2::Subnet",
-    },
-    "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694": Object {
-      "Properties": Object {
-        "Artifacts": Object {
-          "Type": "CODEPIPELINE",
-        },
-        "Cache": Object {
-          "Modes": Array [
-            "LOCAL_DOCKER_LAYER_CACHE",
-          ],
-          "Type": "LOCAL",
-        },
-        "EncryptionKey": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-            "Arn",
-          ],
-        },
-        "Environment": Object {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
-          "EnvironmentVariables": Array [
-            Object {
-              "Name": "REPOSITORY_URI",
-              "Type": "PLAINTEXT",
-              "Value": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    Object {
-                      "Fn::Select": Array [
-                        4,
-                        Object {
-                          "Fn::Split": Array [
-                            ":",
-                            Object {
-                              "Fn::GetAtt": Array [
-                                "helloEcsFargateWithCicdhelloecrrepo75FB1808",
-                                "Arn",
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    ".dkr.ecr.",
-                    Object {
-                      "Fn::Select": Array [
-                        3,
-                        Object {
-                          "Fn::Split": Array [
-                            ":",
-                            Object {
-                              "Fn::GetAtt": Array [
-                                "helloEcsFargateWithCicdhelloecrrepo75FB1808",
-                                "Arn",
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                    ".",
-                    Object {
-                      "Ref": "AWS::URLSuffix",
-                    },
-                    "/",
-                    Object {
-                      "Ref": "helloEcsFargateWithCicdhelloecrrepo75FB1808",
-                    },
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Name": "CONTAINER_NAME",
-              "Type": "PLAINTEXT",
-              "Value": "hello",
-            },
-          ],
-          "Image": "aws/codebuild/standard:4.0",
-          "ImagePullCredentialsType": "CODEBUILD",
-          "PrivilegedMode": true,
-          "Type": "LINUX_CONTAINER",
-        },
-        "ServiceRole": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhelloCodeBuildPlojectRole31360562",
-            "Arn",
-          ],
-        },
-        "Source": Object {
-          "BuildSpec": "{
-  \\"version\\": \\"0.2\\",
-  \\"phases\\": {
-    \\"pre_build\\": {
-      \\"commands\\": [
-        \\"aws --version\\",
-        \\"$(aws ecr get-login --region \${AWS_DEFAULT_REGION} --no-include-email |  sed 's|https://||')\\",
-        \\"COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)\\",
-        \\"IMAGE_TAG=\${COMMIT_HASH:=latest}\\",
-        \\"echo $IMAGE_TAG\\"
-      ]
-    },
-    \\"build\\": {
-      \\"commands\\": [
-        \\"docker build -t $REPOSITORY_URI:latest .\\",
-        \\"docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG\\"
-      ]
-    },
-    \\"post_build\\": {
-      \\"commands\\": [
-        \\"echo Build completed on \`date\`\\",
-        \\"echo Pushing the Docker images...\\",
-        \\"docker push $REPOSITORY_URI:latest\\",
-        \\"docker push $REPOSITORY_URI:$IMAGE_TAG\\",
-        \\"echo Writing image definitions file...\\",
-        \\"printf \\\\\\"[{\\\\\\\\\\\\\\"name\\\\\\\\\\\\\\":\\\\\\\\\\\\\\"\${CONTAINER_NAME}\\\\\\\\\\\\\\",\\\\\\\\\\\\\\"imageUri\\\\\\\\\\\\\\":\\\\\\\\\\\\\\"\${REPOSITORY_URI}:latest\\\\\\\\\\\\\\"}]\\\\\\" > imagedefinitions.json\\"
-      ]
-    }
-  },
-  \\"artifacts\\": {
-    \\"files\\": [
-      \\"imagedefinitions.json\\"
-    ]
-  }
-}",
-          "Type": "CODEPIPELINE",
-        },
-      },
-      "Type": "AWS::CodeBuild::Project",
-    },
-    "helloEcsFargateWithCicdhelloCodeBuildPlojectRole31360562": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "codebuild.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhelloCodeBuildPlojectRoleDefaultPolicy5F8BA728": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:ap-northeast-2:074732449166:log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694",
-                      },
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":logs:ap-northeast-2:074732449166:log-group:/aws/codebuild/",
-                      Object {
-                        "Ref": "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694",
-                      },
-                      ":*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "codebuild:CreateReportGroup",
-                "codebuild:CreateReport",
-                "codebuild:UpdateReport",
-                "codebuild:BatchPutTestCases",
-                "codebuild:BatchPutCodeCoverages",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":codebuild:ap-northeast-2:074732449166:report-group/",
-                    Object {
-                      "Ref": "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694",
-                    },
-                    "-*",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhelloecrrepo75FB1808",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "ecr:GetAuthorizationToken",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "ecr:PutImage",
-                "ecr:InitiateLayerUpload",
-                "ecr:UploadLayerPart",
-                "ecr:CompleteLayerUpload",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhelloecrrepo75FB1808",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "helloEcsFargateWithCicdhelloCodeBuildPlojectRoleDefaultPolicy5F8BA728",
-        "Roles": Array [
-          Object {
-            "Ref": "helloEcsFargateWithCicdhelloCodeBuildPlojectRole31360562",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipeline61B10F06": Object {
-      "DependsOn": Array [
-        "helloEcsFargateWithCicdhellobuildCodePipelineRoleDefaultPolicyBC943CCE",
-        "helloEcsFargateWithCicdhellobuildCodePipelineRoleEB28542C",
-      ],
-      "Properties": Object {
-        "ArtifactStore": Object {
-          "EncryptionKey": Object {
-            "Id": Object {
-              "Fn::GetAtt": Array [
-                "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                "Arn",
-              ],
-            },
-            "Type": "KMS",
-          },
-          "Location": Object {
-            "Ref": "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-          },
-          "Type": "S3",
-        },
-        "Name": "hello-ci-ecr-pipeline",
-        "RoleArn": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhellobuildCodePipelineRoleEB28542C",
-            "Arn",
-          ],
-        },
-        "Stages": Array [
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Source",
-                  "Owner": "ThirdParty",
-                  "Provider": "GitHub",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "Branch": "master",
-                  "OAuthToken": "{{resolve:secretsmanager:devrock/github/token:SecretString:::}}",
-                  "Owner": "jingood2",
-                  "PollForSourceChanges": false,
-                  "Repo": "hello-app",
-                },
-                "Name": "Github_Source",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Source_Github_Source",
-                  },
-                ],
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Source",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Build",
-                  "Owner": "AWS",
-                  "Provider": "CodeBuild",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "ProjectName": Object {
-                    "Ref": "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694",
-                  },
-                },
-                "InputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Source_Github_Source",
-                  },
-                ],
-                "Name": "Build_DockerImage_ECR",
-                "OutputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Build_Build_DockerImage_ECR",
-                  },
-                ],
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleD9A06246",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Build",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Approval",
-                  "Owner": "AWS",
-                  "Provider": "Manual",
-                  "Version": "1",
-                },
-                "Name": "Approve",
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineApprovalApproveCodePipelineActionRole7E93130A",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "Approval",
-          },
-          Object {
-            "Actions": Array [
-              Object {
-                "ActionTypeId": Object {
-                  "Category": "Deploy",
-                  "Owner": "AWS",
-                  "Provider": "ECS",
-                  "Version": "1",
-                },
-                "Configuration": Object {
-                  "ClusterName": Object {
-                    "Ref": "CLUSTERCDDEBBE4",
-                  },
-                  "ServiceName": Object {
-                    "Fn::GetAtt": Array [
-                      "helloEcsFargateWithCicdhelloecsserviceService256DE852",
-                      "Name",
-                    ],
-                  },
-                },
-                "InputArtifacts": Array [
-                  Object {
-                    "Name": "Artifact_Build_Build_DockerImage_ECR",
-                  },
-                ],
-                "Name": "DeployAction",
-                "RoleArn": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleBED62737",
-                    "Arn",
-                  ],
-                },
-                "RunOrder": 1,
-              },
-            ],
-            "Name": "DeploytoECS",
-          },
-        ],
-      },
-      "Type": "AWS::CodePipeline::Pipeline",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineApprovalApproveCodePipelineActionRole7E93130A": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::074732449166:root",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "KMSMasterKeyID": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                    "Arn",
-                  ],
-                },
-                "SSEAlgorithm": "aws:kms",
-              },
-            },
-          ],
-        },
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "KeyPolicy": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "kms:Create*",
-                "kms:Describe*",
-                "kms:Enable*",
-                "kms:List*",
-                "kms:Put*",
-                "kms:Update*",
-                "kms:Revoke*",
-                "kms:Disable*",
-                "kms:Get*",
-                "kms:Delete*",
-                "kms:ScheduleKeyDeletion",
-                "kms:CancelKeyDeletion",
-                "kms:GenerateDataKey",
-                "kms:TagResource",
-                "kms:UntagResource",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::074732449166:root",
-                    ],
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineRoleEB28542C",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhelloCodeBuildPlojectRole31360562",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhelloCodeBuildPlojectRole31360562",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleBED62737",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::KMS::Key",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKeyAliasCC58192F": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "AliasName": "alias/codepipeline-teststackhelloecsfargatewithcicdhellobuildcodepipeline06b8ac5a",
-        "TargetKeyId": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::KMS::Alias",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleD9A06246": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::074732449166:root",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicyBF3F8F98": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "codebuild:BatchGetBuilds",
-                "codebuild:StartBuild",
-                "codebuild:StopBuild",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhelloCodeBuildPlojectF93B1694",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleDefaultPolicyBF3F8F98",
-        "Roles": Array [
-          Object {
-            "Ref": "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleD9A06246",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleBED62737": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":iam::074732449166:root",
-                    ],
-                  ],
-                },
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy6A8B9398": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "ecs:DescribeServices",
-                "ecs:DescribeTaskDefinition",
-                "ecs:DescribeTasks",
-                "ecs:ListTasks",
-                "ecs:RegisterTaskDefinition",
-                "ecs:UpdateService",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": "iam:PassRole",
-              "Condition": Object {
-                "StringEqualsIfExists": Object {
-                  "iam:PassedToService": Array [
-                    "ec2.amazonaws.com",
-                    "ecs-tasks.amazonaws.com",
-                  ],
-                },
-              },
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleDefaultPolicy6A8B9398",
-        "Roles": Array [
-          Object {
-            "Ref": "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleBED62737",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineRoleDefaultPolicyBC943CCE": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucket83748A3C",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-            Object {
-              "Action": Array [
-                "kms:Decrypt",
-                "kms:DescribeKey",
-                "kms:Encrypt",
-                "kms:ReEncrypt*",
-                "kms:GenerateDataKey*",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineArtifactsBucketEncryptionKey7095FABE",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineBuildBuildDockerImageECRCodePipelineActionRoleD9A06246",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineApprovalApproveCodePipelineActionRole7E93130A",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellobuildCodePipelineDeploytoECSDeployActionCodePipelineActionRoleBED62737",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "helloEcsFargateWithCicdhellobuildCodePipelineRoleDefaultPolicyBC943CCE",
-        "Roles": Array [
-          Object {
-            "Ref": "helloEcsFargateWithCicdhellobuildCodePipelineRoleEB28542C",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineRoleEB28542C": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "codepipeline.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhellobuildCodePipelineSourceGithubSourceWebhookResource2E2B89D3": Object {
-      "Properties": Object {
-        "Authentication": "GITHUB_HMAC",
-        "AuthenticationConfiguration": Object {
-          "SecretToken": "{{resolve:secretsmanager:devrock/github/token:SecretString:::}}",
-        },
-        "Filters": Array [
-          Object {
-            "JsonPath": "$.ref",
-            "MatchEquals": "refs/heads/{Branch}",
-          },
-        ],
-        "RegisterWithThirdParty": true,
-        "TargetAction": "Github_Source",
-        "TargetPipeline": Object {
-          "Ref": "helloEcsFargateWithCicdhellobuildCodePipeline61B10F06",
-        },
-        "TargetPipelineVersion": 1,
-      },
-      "Type": "AWS::CodePipeline::Webhook",
-    },
-    "helloEcsFargateWithCicdhelloecrrepo75FB1808": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "RepositoryName": "hello-ecr-repo",
-      },
-      "Type": "AWS::ECR::Repository",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "helloEcsFargateWithCicdhelloecsserviceSecurityGroup3D93DC4D": Object {
-      "Properties": Object {
-        "GroupDescription": "testStack/hello-EcsFargateWithCicd/hello-ecs-service/SecurityGroup",
-        "SecurityGroupEgress": Array [
-          Object {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow all outbound traffic by default",
-            "IpProtocol": "-1",
-          },
-        ],
-        "VpcId": Object {
-          "Ref": "devrockdevVpcE0FCCF81",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
-    "helloEcsFargateWithCicdhelloecsserviceSecurityGroupfromtestStackALBdevrockdevalbsg46DF81F180809B61641E": Object {
-      "Properties": Object {
-        "Description": "Load balancer to target",
-        "FromPort": 8080,
-        "GroupId": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhelloecsserviceSecurityGroup3D93DC4D",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "SourceSecurityGroupId": Object {
-          "Fn::GetAtt": Array [
-            "ALBdevrockdevalbsg2E1574B3",
-            "GroupId",
-          ],
-        },
-        "ToPort": 8080,
-      },
-      "Type": "AWS::EC2::SecurityGroupIngress",
-    },
-    "helloEcsFargateWithCicdhelloecsserviceService256DE852": Object {
-      "DependsOn": Array [
-        "ALBdevrockdevALBhttpshelloTargetgroupRuleC374F68A",
-      ],
-      "Properties": Object {
-        "Cluster": Object {
-          "Ref": "CLUSTERCDDEBBE4",
-        },
-        "DeploymentConfiguration": Object {
-          "MaximumPercent": 200,
-          "MinimumHealthyPercent": 50,
-        },
-        "DesiredCount": 2,
-        "EnableECSManagedTags": false,
-        "HealthCheckGracePeriodSeconds": 60,
-        "LaunchType": "FARGATE",
-        "LoadBalancers": Array [
-          Object {
-            "ContainerName": "hello",
-            "ContainerPort": 8080,
-            "TargetGroupArn": Object {
-              "Ref": "ALBdevrockdevALBhttpshelloTargetgroupGroup096DB6E4",
-            },
-          },
-        ],
-        "NetworkConfiguration": Object {
-          "AwsvpcConfiguration": Object {
-            "AssignPublicIp": "DISABLED",
-            "SecurityGroups": Array [
-              Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhelloecsserviceSecurityGroup3D93DC4D",
-                  "GroupId",
-                ],
-              },
-            ],
-            "Subnets": Array [
-              Object {
-                "Ref": "devrockdevVpcprivateSubnet1Subnet8A550869",
-              },
-              Object {
-                "Ref": "devrockdevVpcprivateSubnet2Subnet0E13231B",
-              },
-            ],
-          },
-        },
-        "TaskDefinition": Object {
-          "Ref": "helloEcsFargateWithCicdhellofargatetaskdefCC50B3A2",
-        },
-      },
-      "Type": "AWS::ECS::Service",
-    },
-    "helloEcsFargateWithCicdhelloecsserviceTaskCountTarget50FAB385": Object {
-      "Properties": Object {
-        "MaxCapacity": 4,
-        "MinCapacity": 2,
-        "ResourceId": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "service/",
-              Object {
-                "Ref": "CLUSTERCDDEBBE4",
-              },
-              "/",
-              Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhelloecsserviceService256DE852",
-                  "Name",
-                ],
-              },
-            ],
-          ],
-        },
-        "RoleARN": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":iam::074732449166:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
-            ],
-          ],
-        },
-        "ScalableDimension": "ecs:service:DesiredCount",
-        "ServiceNamespace": "ecs",
-      },
-      "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
-    },
-    "helloEcsFargateWithCicdhelloecsserviceTaskCountTargetCPUUtilizationScaleInOut528D7EB1": Object {
-      "Properties": Object {
-        "PolicyName": "testStackhelloEcsFargateWithCicdhelloecsserviceTaskCountTargetCPUUtilizationScaleInOut58860C8E",
-        "PolicyType": "TargetTrackingScaling",
-        "ScalingTargetId": Object {
-          "Ref": "helloEcsFargateWithCicdhelloecsserviceTaskCountTarget50FAB385",
-        },
-        "TargetTrackingScalingPolicyConfiguration": Object {
-          "PredefinedMetricSpecification": Object {
-            "PredefinedMetricType": "ECSServiceAverageCPUUtilization",
-          },
-          "ScaleInCooldown": 360,
-          "ScaleOutCooldown": 60,
-          "TargetValue": 20,
-        },
-      },
-      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
-    },
-    "helloEcsFargateWithCicdhellofargatetaskdefCC50B3A2": Object {
-      "Properties": Object {
-        "ContainerDefinitions": Array [
-          Object {
-            "Cpu": 256,
-            "EnvironmentFiles": Array [],
-            "Essential": true,
-            "Image": Object {
-              "Fn::Join": Array [
-                "",
-                Array [
-                  "074732449166.dkr.ecr.ap-northeast-2.",
-                  Object {
-                    "Ref": "AWS::URLSuffix",
-                  },
-                  "/aws-cdk/assets:a4d0dfe1f748fa08918d1c22b5d548b108b5d58b3d6378d217ae0095256a69e3",
-                ],
-              ],
-            },
-            "LogConfiguration": Object {
-              "LogDriver": "awslogs",
-              "Options": Object {
-                "awslogs-group": Object {
-                  "Ref": "helloEcsFargateWithCicdhellofargatetaskdefhelloContainerLogGroup658308B7",
-                },
-                "awslogs-region": "ap-northeast-2",
-                "awslogs-stream-prefix": "ecs-logs",
-              },
-            },
-            "Memory": 512,
-            "Name": "hello",
-            "PortMappings": Array [
-              Object {
-                "ContainerPort": 8080,
-                "Protocol": "tcp",
-              },
-            ],
-            "Secrets": Array [],
-          },
-        ],
-        "Cpu": "512",
-        "ExecutionRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "helloEcsFargateWithCicdhellofargatetaskdefExecutionRole5CB294BE",
-            "Arn",
-          ],
-        },
-        "Family": "testStackhelloEcsFargateWithCicdhellofargatetaskdef4E47445B",
-        "Memory": "1024",
-        "NetworkMode": "awsvpc",
-        "RequiresCompatibilities": Array [
-          "FARGATE",
-        ],
-        "TaskRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "EcsTaskExecutionRoleC0B6A84D",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::ECS::TaskDefinition",
-    },
-    "helloEcsFargateWithCicdhellofargatetaskdefExecutionRole5CB294BE": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "ecs-tasks.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "helloEcsFargateWithCicdhellofargatetaskdefExecutionRoleDefaultPolicyB375ED57": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "ecr:GetAuthorizationToken",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::Join": Array [
-                  "",
-                  Array [
-                    "arn:",
-                    Object {
-                      "Ref": "AWS::Partition",
-                    },
-                    ":ecr:ap-northeast-2:074732449166:repository/aws-cdk/assets",
-                  ],
-                ],
-              },
-            },
-            Object {
-              "Action": "ecr:GetAuthorizationToken",
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-            Object {
-              "Action": Array [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "helloEcsFargateWithCicdhellofargatetaskdefhelloContainerLogGroup658308B7",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "helloEcsFargateWithCicdhellofargatetaskdefExecutionRoleDefaultPolicyB375ED57",
-        "Roles": Array [
-          Object {
-            "Ref": "helloEcsFargateWithCicdhellofargatetaskdefExecutionRole5CB294BE",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "helloEcsFargateWithCicdhellofargatetaskdefhelloContainerLogGroup658308B7": Object {
-      "DeletionPolicy": "Retain",
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
     },
   },
 }

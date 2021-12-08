@@ -135,8 +135,8 @@ export class EcsFargateCicd extends cdk.Construct {
 
 
     const taskdef = new ecs.FargateTaskDefinition(this, `${props.appName}-fargate-taskdef`, {
-      cpu: 512,
-      memoryLimitMiB: 1024,
+      cpu: 1024,
+      memoryLimitMiB: 2048,
       taskRole: taskExecutionRole,
     });
 
@@ -145,8 +145,8 @@ export class EcsFargateCicd extends cdk.Construct {
     taskdef.addContainer(`${props.appName}-Container`, {
       image: this.ecrImage,
       containerName: `${props.appName}`,
-      cpu: 256,
-      memoryLimitMiB: 512,
+      cpu: 1024,
+      memoryLimitMiB: 2048,
       essential: true,
       environmentFiles: [
         //ecs.EnvironmentFile.fromAsset( path.join(__dirname, '../env', `${props.appName}-${props.stageName}.env` )),
@@ -155,7 +155,7 @@ export class EcsFargateCicd extends cdk.Construct {
         // Retrieved from AWS Secrets Manager or AWS Systems Manager Parameter Store at container start-up.
         //DB_PASSWORD: ecs.Secret.fromSecretsManager(dbSecret, 'password'),
       },
-      portMappings: [{ containerPort: 8080 }],
+      portMappings: [{ containerPort: 8090 }],
       logging: ecs.LogDriver.awsLogs({ streamPrefix: 'ecs-logs' }),
     });
 
@@ -329,6 +329,8 @@ export class EcsFargateCicd extends cdk.Construct {
         build: {
           commands: [
             //'docker buildx build --platform linux/amd64 -t $REPOSITORY_URI:latest .',
+            'chmod +x gradlew',
+            './gradlew clean build',
             'docker build -t $REPOSITORY_URI:latest .',
             'docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG',
           ],

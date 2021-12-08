@@ -9,6 +9,7 @@ const project = new AwsCdkTypeScriptApp({
     '@aws-cdk/aws-ec2',
     '@aws-cdk/aws-ecr',
     '@aws-cdk/aws-iam',
+    '@aws-cdk/aws-wafv2',
     '@aws-cdk/aws-ecs',
     '@aws-cdk/aws-ecs-patterns',
     '@aws-cdk/aws-codebuild',
